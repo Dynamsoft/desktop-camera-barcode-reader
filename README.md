@@ -50,7 +50,7 @@ The demo shows how to build a desktop camera barcode reader using C/C++ and CMak
 
     ```
     sudo xcode-select --install
-    brew install cmake
+    brew install cmake pkg-config
     ```
 
 2. Extract the OpenCV source code and create a temporary directory:
@@ -152,3 +152,37 @@ reader.InitLicense("LICENSE-KEY");
     ```
 
 ## macOS
+
+1. Copy `Dynamsoft/lib/libDynamsoftBarcodeReader.dylib` to `platforms/macos/`.
+2. Create a **build** folder:
+
+    ```
+    mkdir build
+    cd build
+    ```
+
+3. Generate project configuration files.
+
+    ```bash
+    cmake ..
+    ```
+
+4. Build the project:
+
+    ```
+    cmake --build . 
+    ```
+
+5. Run the app:
+
+    ```
+    ./BarcodeReader
+    ```
+
+    Note: the command line app will fail to run if the OS version is 10.14 or higher. 
+
+    ```
+    OpenCV: not authorized to capture video (status 0), requesting...
+    ```
+
+    You can check the OS version with `sw_vers -productVersion `.

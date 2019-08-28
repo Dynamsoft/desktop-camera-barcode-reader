@@ -38,6 +38,7 @@ elseif(LINUX)
     find_package(OpenCV REQUIRED)
 elseif(MACOS)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/macos/") 
+    find_package(OpenCV REQUIRED)
 endif()
 include_directories("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/include/")
 
@@ -62,6 +63,11 @@ elseif(LINUX)
     add_custom_command(TARGET BarcodeReader POST_BUILD 
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PROJECT_SOURCE_DIR}/platforms/linux/"      
+        $<TARGET_FILE_DIR:BarcodeReader>)
+elseif(MACOS)
+    add_custom_command(TARGET BarcodeReader POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/platforms/macos/"      
         $<TARGET_FILE_DIR:BarcodeReader>)
 endif()
 
