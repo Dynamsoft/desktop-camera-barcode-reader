@@ -124,5 +124,31 @@ reader.InitLicense("LICENSE-KEY");
 
 
 
-## Linux & macOS
-[TODO]
+## Linux
+1. Copy `Dynamsoft/BarcodeReader/lib/WITHOUTSTDC++LIB/libDynamsoftBarcodeReader.so` to `platforms/linux/`.
+2. Create a **build** folder:
+
+    ```
+    mkdir build
+    cd build
+    ```
+
+2. Generate project configuration files.
+
+    ```bash
+    cmake ..
+    ```
+
+3. Build the project:
+
+    ```
+    cmake --build . 
+    ```
+
+4. Run the app:
+
+    ```
+    ./BarcodeReader
+    ```
+
+## macOS
