@@ -10,18 +10,11 @@
 #include <sys/time.h>
 #endif
 
-
 using namespace cv;
 using namespace std;
 using std::cout; 
 using std::cerr; 
 using std::endl;
-
-// #ifdef _WIN64
-// #pragma comment(lib, "Lib/DBRx64.lib")
-// #else
-// #pragma comment(lib, "Lib/DBRx86.lib")
-// #endif
 
 void ToHexString(unsigned char* pSrc, int iLen, char* pDest)
 {
@@ -32,7 +25,7 @@ void ToHexString(unsigned char* pSrc, int iLen, char* pDest)
 
 	for (i = 0; i < iLen; ++i)
 	{
-		sprintf_s(ptr, 4, "%c%c ", HEXCHARS[(pSrc[i] & 0xF0) >> 4], HEXCHARS[(pSrc[i] & 0x0F) >> 0]);
+		snprintf(ptr, 4, "%c%c ", HEXCHARS[(pSrc[i] & 0xF0) >> 4], HEXCHARS[(pSrc[i] & 0x0F) >> 0]);
 		ptr += 3;
 	}
 }
@@ -47,28 +40,28 @@ void textResultcallback(int frameId, TextResultArray *pResults, void * pUser)
 
 	if (pResults->resultsCount == 0)
 	{
-		sprintf_s(pszTemp, 4096, "No barcode found.\r\n\r\n");
+		snprintf(pszTemp, 4096, "No barcode found.\r\n\r\n");
 		printf(pszTemp);
 		free(pszTemp);
 		CBarcodeReader::FreeTextResults(&pResults);
 		return;
 	}
 
-	sprintf_s(pszTemp, 4096, "\r\n\r\nframe = %d,Total barcode(s) found: %d.\n", frameId, pResults->resultsCount);
+	snprintf(pszTemp, 4096, "\r\n\r\nframe = %d,Total barcode(s) found: %d.\n", frameId, pResults->resultsCount);
 	printf(pszTemp);
 	for (int iIndex = 0; iIndex < pResults->resultsCount; iIndex++)
 	{
-		sprintf_s(pszTemp, 4096, "Barcode %d:\r\n", iIndex + 1);
+		snprintf(pszTemp, 4096, "Barcode %d:\r\n", iIndex + 1);
 		printf(pszTemp);
-		sprintf_s(pszTemp, 4096, "    Type: %s\r\n", pResults->results[iIndex]->barcodeFormatString);
+		snprintf(pszTemp, 4096, "    Type: %s\r\n", pResults->results[iIndex]->barcodeFormatString);
 		printf(pszTemp);
-		sprintf_s(pszTemp, 4096, "    Value: %s\r\n", pResults->results[iIndex]->barcodeText);
+		snprintf(pszTemp, 4096, "    Value: %s\r\n", pResults->results[iIndex]->barcodeText);
 		printf(pszTemp);
 
 		pszTemp1 = (char*)malloc(pResults->results[iIndex]->barcodeBytesLength * 3 + 1);
 		pszTemp2 = (char*)malloc(pResults->results[iIndex]->barcodeBytesLength*3 + 100);
 		ToHexString(pResults->results[iIndex]->barcodeBytes, pResults->results[iIndex]->barcodeBytesLength, pszTemp1);
-		sprintf_s(pszTemp2, pResults->results[iIndex]->barcodeBytesLength*3 + 100, "    Hex Data: %s\r\n", pszTemp1);
+		snprintf(pszTemp2, pResults->results[iIndex]->barcodeBytesLength*3 + 100, "    Hex Data: %s\r\n", pszTemp1);
 		printf(pszTemp2);
 		free(pszTemp1);
 		free(pszTemp2);
@@ -86,7 +79,7 @@ void errorcb(int frameId, int errorCode, void * pUser)
 	if (errorCode != DBR_OK && errorCode != DBRERR_LICENSE_EXPIRED && errorCode != DBRERR_QR_LICENSE_INVALID &&
 		errorCode != DBRERR_1D_LICENSE_INVALID && errorCode != DBRERR_PDF417_LICENSE_INVALID && errorCode != DBRERR_DATAMATRIX_LICENSE_INVALID)
 	{
-		sprintf_s(pszTemp, 4096, "Failed to read barcode: %s\r\n", CBarcodeReader::GetErrorString(errorCode));
+		snprintf(pszTemp, 4096, "Failed to read barcode: %s\r\n", CBarcodeReader::GetErrorString(errorCode));
 		printf(pszTemp);
 		free(pszTemp);
 		return;

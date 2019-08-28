@@ -35,6 +35,7 @@ if(WINDOWS)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/win/lib/") 
 elseif(LINUX)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/linux/") 
+    find_package(OpenCV REQUIRED)
 elseif(MACOS)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/macos/") 
 endif()
@@ -49,7 +50,7 @@ if(WINDOWS)
         target_link_libraries (BarcodeReader "DBRx86" "opencv_core347d.lib" "opencv_highgui347d.lib" "opencv_videoio347d.lib")
     endif()
 else()
-    target_link_libraries (BarcodeReader "DynamsoftBarcodeReader")
+    target_link_libraries (BarcodeReader "DynamsoftBarcodeReader" ${OpenCV_LIBS})
 endif()
 
 if(WINDOWS)
@@ -57,7 +58,11 @@ if(WINDOWS)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PROJECT_SOURCE_DIR}/platforms/win/bin/"      
         $<TARGET_FILE_DIR:BarcodeReader>)
-
+elseif(LINUX)
+    add_custom_command(TARGET BarcodeReader POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/platforms/linux/"      
+        $<TARGET_FILE_DIR:BarcodeReader>)
 endif()
 
 # Set installation directory
