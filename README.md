@@ -122,7 +122,7 @@ reader.InitLicense("LICENSE-KEY");
     build\Debug\BarcodeReader.exe
     ```
 
-
+    ![](https://www.dynamsoft.com/CustomerPortal/images/upload/224-big.png)
 
 ## Linux
 1. Copy `Dynamsoft/BarcodeReader/lib/WITHOUTSTDC++LIB/libDynamsoftBarcodeReader.so` to `platforms/linux/`.
