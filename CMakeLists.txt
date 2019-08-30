@@ -3,8 +3,8 @@ project (BarcodeReader)
 MESSAGE( STATUS "PROJECT_NAME: " ${PROJECT_NAME} )
 
 # The version number.
-set(BarcodeReader_VERSION_MAJOR 6)
-set(BarcodeReader_VERSION_MINOR 3)
+set(BarcodeReader_VERSION_MAJOR 7)
+set(BarcodeReader_VERSION_MINOR 1)
 
 # Check platforms
 if (CMAKE_HOST_WIN32)
