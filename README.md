@@ -186,3 +186,6 @@ reader.InitLicense("LICENSE-KEY");
     ```
 
     You can check the OS version with `sw_vers -productVersion `.
+    
+  ## Blog
+  [How to Port Visual Studio C++ Project to Linux with CMake](https://www.codepool.biz/port-visual-studio-cpp-linux-cmake.html)
