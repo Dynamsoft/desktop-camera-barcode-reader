@@ -3,7 +3,7 @@ The demo shows how to build a desktop camera barcode reader using C/C++ and CMak
 
 ## Download
 - [OpenCV 3.4.7](https://github.com/opencv/opencv/archive/3.4.7.zip)
-- [Dynamsoft Barcode Reader SDK](https://github.com/dynamsoft-dbr/desktop-camera-barcode-reader/releases)
+- [Dynamsoft Barcode Reader SDK v7.1](https://github.com/dynamsoft-dbr/desktop-camera-barcode-reader/releases/tag/v7.1)
 
 ## Build OpenCV
 ### Windows
