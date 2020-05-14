@@ -16,6 +16,14 @@ using std::cout;
 using std::cerr; 
 using std::endl;
 
+#define DBR_EXCEPTION(iRet) {                                       		\
+		if (iRet != 0)												\
+		{															\
+			printf("%s\n", CBarcodeReader::GetErrorString(iRet));	\
+			return -1;												\
+		}															\
+    }																\
+
 void ToHexString(unsigned char* pSrc, int iLen, char* pDest)
 {
 	const char HEXCHARS[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -31,7 +39,7 @@ void ToHexString(unsigned char* pSrc, int iLen, char* pDest)
 }
 
 
-void textResultcallback(int frameId, TextResultArray *pResults, void * pUser)
+void textResultCallback(int frameId, TextResultArray *pResults, void * pUser)
 {
 	char * pszTemp = NULL;
 	char * pszTemp1 = NULL;
@@ -75,7 +83,6 @@ void errorcb(int frameId, int errorCode, void * pUser)
 {
 	char * pszTemp = NULL;
 	pszTemp = (char*)malloc(4096);
-	printf("frame = %d errorcode = %d\n", frameId, errorCode);
 	if (errorCode != DBR_OK && errorCode != DBRERR_LICENSE_EXPIRED && errorCode != DBRERR_QR_LICENSE_INVALID &&
 		errorCode != DBRERR_1D_LICENSE_INVALID && errorCode != DBRERR_PDF417_LICENSE_INVALID && errorCode != DBRERR_DATAMATRIX_LICENSE_INVALID)
 	{
@@ -102,30 +109,26 @@ int main()
 	 
 	int iRet = -1;
 	CBarcodeReader reader;
-	iRet = reader.InitLicense("t0068MgAAAKtQxxBGTyekyhWwYpB4luFk/ZUMHAjaGXC0Hiz6JI8Lm6E2k0a7nCGfhCC3Yos3oDadc8/+w4ZVdOMUUEyM4rQ=");
+	iRet = reader.InitLicense("t0068NQAAAKNCY2jE+ejBfIcqyimfaH9+hLqkYHAf47zau3kRog9ZLssuVdB4V/3JyHVlQRmnf9UkOrMPmYJKGHziUOZeGJI=");
 	if (iRet != 0)
 	{
 		printf("%s\n", CBarcodeReader::GetErrorString(iRet));
-		return -1;
 	}
-	iRet = reader.InitRuntimeSettingsWithString("{\"Version\":\"3.0\",\"ImageParameterContentArray\":[{\"Name\":\"IP1\",\"LocalizationModes\":[\"LM_SCAN_DIRECTLY\"],\"ExpectedBarcodesCount\":100}]}",CM_OVERWRITE);
-	if (iRet != 0)
-	{
-		printf("%s\n", CBarcodeReader::GetErrorString(iRet));
-		return -1;
-	}
-	iRet = reader.SetTextResultCallback(textResultcallback,NULL);
-	if (iRet != 0)
-	{
-		printf("%s\n", CBarcodeReader::GetErrorString(iRet));
-		return -1;
-	}
-	iRet = reader.SetErrorCallback(errorcb, NULL);
-	if (iRet != 0)
-	{
-		printf("%s\n", CBarcodeReader::GetErrorString(iRet));
-		return -1;
-	}
+	PublicRuntimeSettings runtimeSettings;
+	char szErrorMsg[256];
+	//Best coverage settings
+	reader.InitRuntimeSettingsWithString("{\"ImageParameter\":{\"Name\":\"BestCoverage\",\"DeblurLevel\":9,\"ExpectedBarcodesCount\":512,\"ScaleDownThreshold\":100000,\"LocalizationModes\":[{\"Mode\":\"LM_CONNECTED_BLOCKS\"},{\"Mode\":\"LM_SCAN_DIRECTLY\"},{\"Mode\":\"LM_STATISTICS\"},{\"Mode\":\"LM_LINES\"},{\"Mode\":\"LM_STATISTICS_MARKS\"}],\"GrayscaleTransformationModes\":[{\"Mode\":\"GTM_ORIGINAL\"},{\"Mode\":\"GTM_INVERTED\"}]}}", CM_OVERWRITE, szErrorMsg, 256);
+	//Best speed settings
+	//reader.InitRuntimeSettingsWithString("{\"ImageParameter\":{\"Name\":\"BestSpeed\",\"DeblurLevel\":3,\"ExpectedBarcodesCount\":512,\"LocalizationModes\":[{\"Mode\":\"LM_SCAN_DIRECTLY\"}],\"TextFilterModes\":[{\"MinImageDimension\":262144,\"Mode\":\"TFM_GENERAL_CONTOUR\"}]}}",CM_OVERWRITE,szErrorMsg,256);
+	//Balance settings
+	//reader.InitRuntimeSettingsWithString("{\"ImageParameter\":{\"Name\":\"Balance\",\"DeblurLevel\":5,\"ExpectedBarcodesCount\":512,\"LocalizationModes\":[{\"Mode\":\"LM_CONNECTED_BLOCKS\"},{\"Mode\":\"LM_STATISTICS\"}]}}",CM_OVERWRITE,szErrorMsg,256);
+	reader.GetRuntimeSettings(&runtimeSettings);
+	runtimeSettings.barcodeFormatIds = BF_ALL;
+	runtimeSettings.barcodeFormatIds_2 = BF2_POSTALCODE | BF2_DOTCODE;
+	runtimeSettings.intermediateResultTypes = IRT_ORIGINAL_IMAGE;
+	DBR_EXCEPTION(reader.UpdateRuntimeSettings(&runtimeSettings,szErrorMsg,256));
+	DBR_EXCEPTION(reader.SetTextResultCallback(textResultCallback,NULL));
+	DBR_EXCEPTION(reader.SetErrorCallback(errorcb, NULL));
 	capture >> frame;
 	int width = capture.get(CAP_PROP_FRAME_WIDTH);
 	int height = capture.get(CAP_PROP_FRAME_HEIGHT);

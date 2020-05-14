@@ -4,7 +4,7 @@ MESSAGE( STATUS "PROJECT_NAME: " ${PROJECT_NAME} )
 
 # The version number.
 set(BarcodeReader_VERSION_MAJOR 7)
-set(BarcodeReader_VERSION_MINOR 1)
+set(BarcodeReader_VERSION_MINOR 4)
 
 # Check platforms
 if (CMAKE_HOST_WIN32)
@@ -45,11 +45,7 @@ include_directories("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/include/")
 # Add the executable
 add_executable(BarcodeReader BarcodeReader.cxx)
 if(WINDOWS)
-    if(CMAKE_CL_64)
-        target_link_libraries (BarcodeReader "DBRx64" "opencv_core347d.lib" "opencv_highgui347d.lib" "opencv_videoio347d.lib")
-    else()
-        target_link_libraries (BarcodeReader "DBRx86" "opencv_core347d.lib" "opencv_highgui347d.lib" "opencv_videoio347d.lib")
-    endif()
+    target_link_libraries (BarcodeReader "DBRx64" "opencv_core347d.lib" "opencv_highgui347d.lib" "opencv_videoio347d.lib" "opencv_imgcodecs347d.lib" "opencv_imgproc347d.lib")
 else()
     target_link_libraries (BarcodeReader "DynamsoftBarcodeReader" ${OpenCV_LIBS})
 endif()
