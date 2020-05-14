@@ -3,7 +3,7 @@ The demo shows how to build a desktop camera barcode reader using C/C++ and CMak
 
 ## Download
 - [OpenCV 3.4.7](https://github.com/opencv/opencv/archive/3.4.7.zip)
-- [Dynamsoft Barcode Reader SDK v7.4](https://github.com/dynamsoft-dbr/desktop-camera-barcode-reader/releases/tag/v7.1)
+- [Dynamsoft Barcode Reader SDK v7.4](https://github.com/dynamsoft-dbr/desktop-camera-barcode-reader/releases/tag/v7.4)
 
 ## Build OpenCV
 ### Windows
@@ -81,11 +81,11 @@ reader.InitLicense("LICENSE-KEY");
 ## How to Build and Run the Project
 
 ### Windows
-1. From `C:\Program Files (x86)\Dynamsoft\Barcode Reader 7.1\Components\C_C++\Lib`, copy `DBRx64.lib` to `platforms\win\lib`. 
+1. From `C:\Program Files (x86)\Dynamsoft\Barcode Reader 7.4\Components\C_C++\Lib`, copy `DBRx64.lib` to `platforms\win\lib`. 
 
     From `opencv-3.4.7\build\lib`, copy `opencv_core347d.lib`, `opencv_highgui347d.lib`, `opencv_videoio347d.lib` to `platforms\win\lib`. 
     
-    From `C:\Program Files (x86)\Dynamsoft\Barcode Reader 7.1\Components\C_C++\Redist\x64`, copy all DLL files to `platforms\win\bin`.
+    From `C:\Program Files (x86)\Dynamsoft\Barcode Reader 7.4\Components\C_C++\Redist\x64`, copy all DLL files to `platforms\win\bin`.
 
     From `opencv-3.4.7\build\bin\Debug`, copy `opencv_imgproc347d.dll`, `opencv_videoio347d.dll`, `opencv_highgui347d.dll` and `opencv_imgcodecs347d.dll` to `platforms\win\bin`. 
     
