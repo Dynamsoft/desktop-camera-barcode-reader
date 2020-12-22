@@ -1,10 +1,14 @@
 cmake_minimum_required (VERSION 2.6)
+
+find_package(OpenCV REQUIRED)
+
 project (BarcodeReader)
 MESSAGE( STATUS "PROJECT_NAME: " ${PROJECT_NAME} )
+SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 
 # The version number.
-set(BarcodeReader_VERSION_MAJOR 7)
-set(BarcodeReader_VERSION_MINOR 4)
+set(BarcodeReader_VERSION_MAJOR 8)
+set(BarcodeReader_VERSION_MINOR 0)
 
 # Check platforms
 if (CMAKE_HOST_WIN32)
@@ -35,17 +39,15 @@ if(WINDOWS)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/win/lib/") 
 elseif(LINUX)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/linux/") 
-    find_package(OpenCV REQUIRED)
 elseif(MACOS)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/macos/") 
-    find_package(OpenCV REQUIRED)
 endif()
 include_directories("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/include/")
 
 # Add the executable
 add_executable(BarcodeReader BarcodeReader.cxx)
 if(WINDOWS)
-    target_link_libraries (BarcodeReader "DBRx64" "opencv_core347d.lib" "opencv_highgui347d.lib" "opencv_videoio347d.lib" "opencv_imgcodecs347d.lib" "opencv_imgproc347d.lib")
+    target_link_libraries (BarcodeReader "DBRx64" ${OpenCV_LIBS})
 else()
     target_link_libraries (BarcodeReader "DynamsoftBarcodeReader" ${OpenCV_LIBS})
 endif()

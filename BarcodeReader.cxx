@@ -6,6 +6,7 @@
 #include "DynamsoftBarcodeReader.h"
 #include "BarcodeReaderConfig.h"
 
+using namespace dynamsoft::dbr;
 #if defined(LINUX) || defined(MACOS)
 #include <sys/time.h>
 #endif
@@ -152,7 +153,7 @@ int main()
 		}	
 		reader.AppendFrame(frame.data);
 
-		imshow("Frame", frame);
+		imshow("BarcodeReader", frame);
 		int key = waitKey(1);
 		if (key == 27/*ESC*/)
 			break;
