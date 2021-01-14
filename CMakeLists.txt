@@ -1,14 +1,11 @@
 cmake_minimum_required (VERSION 2.6)
-
-find_package(OpenCV REQUIRED)
-
 project (BarcodeReader)
 MESSAGE( STATUS "PROJECT_NAME: " ${PROJECT_NAME} )
 SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 
 # The version number.
 set(BarcodeReader_VERSION_MAJOR 8)
-set(BarcodeReader_VERSION_MINOR 0)
+set(BarcodeReader_VERSION_MINOR 1)
 
 # Check platforms
 if (CMAKE_HOST_WIN32)
@@ -43,6 +40,8 @@ elseif(MACOS)
     link_directories("${PROJECT_SOURCE_DIR}/platforms/macos/") 
 endif()
 include_directories("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/include/")
+
+find_package(OpenCV REQUIRED)
 
 # Add the executable
 add_executable(BarcodeReader BarcodeReader.cxx)

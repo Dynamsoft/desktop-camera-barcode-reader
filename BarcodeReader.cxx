@@ -42,57 +42,32 @@ void ToHexString(unsigned char* pSrc, int iLen, char* pDest)
 
 void textResultCallback(int frameId, TextResultArray *pResults, void * pUser)
 {
-	char * pszTemp = NULL;
-	char * pszTemp1 = NULL;
-	char * pszTemp2 = NULL;
-	pszTemp = (char*)malloc(4096);
-
 	if (pResults->resultsCount == 0)
 	{
-		snprintf(pszTemp, 4096, "No barcode found.\r\n\r\n");
-		printf(pszTemp);
-		free(pszTemp);
+		printf("No barcode found.\r\n\r\n");
 		CBarcodeReader::FreeTextResults(&pResults);
 		return;
 	}
 
-	snprintf(pszTemp, 4096, "\r\n\r\nframe = %d,Total barcode(s) found: %d.\n", frameId, pResults->resultsCount);
-	printf(pszTemp);
+	printf("\r\n\r\nframe = %d,Total barcode(s) found: %d.\n", frameId, pResults->resultsCount);
 	for (int iIndex = 0; iIndex < pResults->resultsCount; iIndex++)
 	{
-		snprintf(pszTemp, 4096, "Barcode %d:\r\n", iIndex + 1);
-		printf(pszTemp);
-		snprintf(pszTemp, 4096, "    Type: %s\r\n", pResults->results[iIndex]->barcodeFormatString);
-		printf(pszTemp);
-		snprintf(pszTemp, 4096, "    Value: %s\r\n", pResults->results[iIndex]->barcodeText);
-		printf(pszTemp);
-
-		pszTemp1 = (char*)malloc(pResults->results[iIndex]->barcodeBytesLength * 3 + 1);
-		pszTemp2 = (char*)malloc(pResults->results[iIndex]->barcodeBytesLength*3 + 100);
-		ToHexString(pResults->results[iIndex]->barcodeBytes, pResults->results[iIndex]->barcodeBytesLength, pszTemp1);
-		snprintf(pszTemp2, pResults->results[iIndex]->barcodeBytesLength*3 + 100, "    Hex Data: %s\r\n", pszTemp1);
-		printf(pszTemp2);
-		free(pszTemp1);
-		free(pszTemp2);
+		printf("Barcode %d:\r\n", iIndex + 1);
+		printf("    Type: %s\r\n", pResults->results[iIndex]->barcodeFormatString);
+		printf("    Value: %s\r\n", pResults->results[iIndex]->barcodeText);
 	}
-	free(pszTemp);
 
 	CBarcodeReader::FreeTextResults(&pResults);
 }
 
 void errorcb(int frameId, int errorCode, void * pUser)
 {
-	char * pszTemp = NULL;
-	pszTemp = (char*)malloc(4096);
 	if (errorCode != DBR_OK && errorCode != DBRERR_LICENSE_EXPIRED && errorCode != DBRERR_QR_LICENSE_INVALID &&
 		errorCode != DBRERR_1D_LICENSE_INVALID && errorCode != DBRERR_PDF417_LICENSE_INVALID && errorCode != DBRERR_DATAMATRIX_LICENSE_INVALID)
 	{
-		snprintf(pszTemp, 4096, "Failed to read barcode: %s\r\n", CBarcodeReader::GetErrorString(errorCode));
-		printf(pszTemp);
-		free(pszTemp);
+		printf("Failed to read barcode: %s\r\n", CBarcodeReader::GetErrorString(errorCode));
 		return;
 	}
-	free(pszTemp);
 }
 
 
